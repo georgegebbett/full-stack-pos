@@ -1,9 +1,21 @@
 const express = require('express');
-const os = require('os');
 
 const app = express();
 
-app.use(express.static('dist'));
-app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
+const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/authentication');
+const tableRoutes = require('./routes/tables');
+const itemRoutes = require('./routes/items');
 
-app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
+
+app.use(express.static('dist'));
+
+userRoutes(app);
+
+authRoutes(app);
+
+tableRoutes(app);
+
+itemRoutes(app);
+
+app.listen(process.env.PORT || 3001, () => console.log(`Listening on port ${process.env.PORT || 3001}!`));

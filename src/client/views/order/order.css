@@ -1,0 +1,22 @@
+.orderDiv {
+    display: flex;
+    flex-direction: row;
+    background-color: #3700B3;
+    outline: black 2px;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.orderPaper {
+    min-width: 25vw;
+    min-height: 75vh;
+}
+
+.orderButtons {
+    flex-grow: 1;
+    padding: 10px;
+    justify-content: flex-start;
+}

@@ -1,23 +1,54 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './app.css';
-import ReactImage from './react.png';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
+import MyAppBar from './views/navBar/appBar';
+import Login from './views/login/login';
+import Users from './views/users/users';
+import Home from './views/home/home';
+import About from './views/about/about';
+import OrderScreen from './views/order/order';
+import Items from './views/items/items';
+import ItemsList from './views/items/itemsList';
+import { ProvideAuth } from './controllers/use-auth';
+import PrivateRoute from './controllers/privateRoute';
 
-export default class App extends Component {
-  state = { username: null };
-
-  componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
-  }
-
-  render() {
-    const { username } = this.state;
-    return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <img src={ReactImage} alt="react" />
-      </div>
-    );
-  }
+export default function App() {
+  return (
+    <ProvideAuth>
+      <Router>
+        <MyAppBar />
+        <Switch>
+          <PrivateRoute path="/order" roles={['user']}>
+            <OrderScreen />
+          </PrivateRoute>
+          <PrivateRoute path="/users" roles={['admin']}>
+            <Users />
+          </PrivateRoute>
+          <PrivateRoute path="/items" roles={['admin']}>
+            <ItemsList />
+          </PrivateRoute>
+          <PrivateRoute path="/itemsTable" roles={['admin']}>
+            <Items />
+          </PrivateRoute>
+          <PrivateRoute path="/home">
+            <Home />
+          </PrivateRoute>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/">
+            <Redirect to="/login" />
+          </Route>
+        </Switch>
+      </Router>
+    </ProvideAuth>
+  );
 }

@@ -1,0 +1,21 @@
+#loginForm {
+    display: flex;
+    align-content: space-around;
+    justify-content: space-around;
+    flex-direction: column;
+    padding: 10px;
+    height: 25vh;
+    width: 25vw;
+}
+
+.homeDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #6200EE;
+}
+
+.loginButton {
+    align-self: flex-end;
+}
