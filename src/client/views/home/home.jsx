@@ -21,8 +21,8 @@ function Home() {
     <div className="homeDiv">
       <Paper>
         <Typography variant="h3">Welcome to FullStackPOS {auth.user.name}</Typography>
-        <Button variant="contained" component={RouterLink} to="/order">
-          Order Entry
+        <Button variant="contained" component={RouterLink} to="/tables">
+          Tables
         </Button>
       </Paper>
     </div>

@@ -11,6 +11,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import FoodBankIcon from '@mui/icons-material/FoodBank';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { Link as RouterLink, Route, MemoryRouter } from 'react-router-dom';
 import { useAuth } from '../../controllers/use-auth';
 
@@ -48,7 +49,7 @@ export default function ListRouter() {
       <Paper elevation={0}>
         <List aria-label="main functions">
           <ListItemLink to="/home" primary="Home" icon={<HomeIcon />} />
-          {auth.user.roles.includes('server') ? <ListItemLink to="/order" primary="Order Entry" icon={<FastfoodIcon />} /> : null}
+          {auth.user.roles.includes('server') ? <ListItemLink to="/tables" primary="Tables" icon={<RestaurantIcon />} /> : null}
         </List>
         <Divider />
         <List aria-label="secondary functions">

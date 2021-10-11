@@ -4,6 +4,7 @@ const { Role } = require('../db-setup');
 
 module.exports = function (app) {
   app.use(bodyParser({ extended: false }));
+
   app.route('/api/roles')
     .get(async (req, res) => {
       const roles = await Role.find({});
@@ -32,13 +33,18 @@ module.exports = function (app) {
     });
 
   app.route('/api/roles/:roleId')
-    .get(async (req, res) => {
+    .get((req, res) => {
       console.log(req.params.roleId);
-      const foundRole = await Role.findById(req.params.userId);
-      res.json({
-        name: foundRole.name,
-        permissions: foundRole.permissions
-      });
+      Role.findById(req.params.roleId)
+        .then((foundRole) => {
+          res.json({
+            name: foundRole.name,
+            permissions: foundRole.permissions
+          });
+        })
+        .catch(err => {
+          res.sendStatus(404);
+        });
     })
     .delete((req, res) => {
       Role.findByIdAndDelete(req.params.roleId)

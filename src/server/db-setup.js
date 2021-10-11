@@ -13,13 +13,15 @@ const roleSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
-  items: Array
+  items: Array,
+  tableId: String
 });
 
 const tableSchema = new mongoose.Schema({
   tableNumber: Number,
   totalPrice: Number,
-  orders: Array
+  orders: Array,
+  open: Boolean
 });
 
 const orderItemSchema = new mongoose.Schema({
