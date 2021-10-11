@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import SuccessToast from './success-message';
+import NewItemDialog from './new-item-dialog';
 
 import './items.css';
 import Dialog from '@mui/material/Dialog';
@@ -57,44 +58,21 @@ export default function Items() {
 
 
   const handleClickOpen = () => {
+    console.log('Handle open called');
     setDialogOpen(true);
   };
 
   const handleClose = () => {
+    console.log('Handle close called');
     setDialogOpen(false);
   };
-
-  const NewItemDialog = () => (
-    <Dialog open={dialogOpen} onClose={handleClose}>
-      <DialogTitle>Subscribe</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          To subscribe to this website, please enter your email address here. We
-          will send updates occasionally.
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Email Address"
-          type="email"
-          fullWidth
-          variant="standard"
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => handleClose}>Cancel</Button>
-        <Button onClick={() => handleClose}>Subscribe</Button>
-      </DialogActions>
-    </Dialog>
-  );
 
   return (
     (loading ? (
       <Typography variant="h1">Loading!</Typography>
     ) : (
       <TableContainer component={Paper}>
-        <NewItemDialog />
+        <NewItemDialog dialogOpen={dialogOpen} handleClose={handleClose} />
         <SuccessToast open={bannerOpen} handleClose={closeBanner} bannerItem={bannerItem} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="itemTable">
           <TableHead>
@@ -109,7 +87,7 @@ export default function Items() {
           <TableBody>
             {items.map(row => (
               <TableRow
-                key={row.name}
+                key={row._id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -130,3 +108,5 @@ export default function Items() {
     ))
   );
 }
+
+

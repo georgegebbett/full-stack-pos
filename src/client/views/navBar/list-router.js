@@ -48,13 +48,12 @@ export default function ListRouter() {
       <Paper elevation={0}>
         <List aria-label="main functions">
           <ListItemLink to="/home" primary="Home" icon={<HomeIcon />} />
-          {auth.user.roles.includes('user') ? <ListItemLink to="/order" primary="Order Entry" icon={<FastfoodIcon />} /> : null}
+          {auth.user.roles.includes('server') ? <ListItemLink to="/order" primary="Order Entry" icon={<FastfoodIcon />} /> : null}
         </List>
         <Divider />
         <List aria-label="secondary functions">
           {auth.user.roles.includes('admin') ? <ListItemLink to="/users" primary="Users" icon={<GroupIcon />} /> : null}
           {auth.user.roles.includes('admin') ? <ListItemLink to="/items" primary="Items" icon={<FoodBankIcon />} /> : null}
-          {auth.user.roles.includes('admin') ? <ListItemLink to="/itemsTable" primary="Items Table" icon={<FoodBankIcon />} /> : null}
         </List>
       </Paper>
     </Box>

@@ -8,28 +8,51 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../controllers/use-auth';
 import { Button } from '@mui/material';
+import NewUserDialog from './new-user-dialog';
+import AddIcon from '@mui/icons-material/Add';
+import Fab from '@mui/material/Fab';
 
 function createData(name, username) {
   return { name, username };
 }
 
-const rows = [
-  createData('George Gebbett', 'george')
-];
 
 
 export default function Users() {
-
+  const auth = useAuth();
   const [users, setUsers] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    console.log('Handle open called');
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    console.log('Handle close called');
+    setDialogOpen(false);
+  };
 
   useEffect(async () => {
-    const data = (await axios.get('/api/users')).data;
+    const { data } = await axios.get('/api/users');
     setUsers(data);
   });
 
+  const deleteUser = (userId) => {
+    axios.delete(`/api/users/${userId}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <TableContainer component={Paper}>
+      <NewUserDialog dialogOpen={dialogOpen} handleClose={handleClose} />
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -41,9 +64,9 @@ export default function Users() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((row) => (
+          {users.map(row => (
             <TableRow
-              key={row.name}
+              key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -52,11 +75,24 @@ export default function Users() {
               <TableCell align="right">{row.username}</TableCell>
               <TableCell align="right">{row.roles.toString()}</TableCell>
               <TableCell align="right"><Button variant="contained">Edit</Button></TableCell>
-              <TableCell align="right"><Button variant="contained" color="error">Delete</Button></TableCell>
+              <TableCell align="right">
+                <Button
+                  variant="contained"
+                  color="error"
+                  id={row._id}
+                  onClick={event => deleteUser(event.target.id)}
+                  disabled={(auth.user.user === row.username)}
+                >
+                  Delete
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <Fab onClick={handleClickOpen}>
+        <AddIcon />
+      </Fab>
     </TableContainer>
   );
 }

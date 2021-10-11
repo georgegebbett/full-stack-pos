@@ -13,7 +13,6 @@ import Home from './views/home/home';
 import About from './views/about/about';
 import OrderScreen from './views/order/order';
 import Items from './views/items/items';
-import ItemsList from './views/items/itemsList';
 import { ProvideAuth } from './controllers/use-auth';
 import PrivateRoute from './controllers/privateRoute';
 
@@ -30,9 +29,6 @@ export default function App() {
             <Users />
           </PrivateRoute>
           <PrivateRoute path="/items" roles={['admin']}>
-            <ItemsList />
-          </PrivateRoute>
-          <PrivateRoute path="/itemsTable" roles={['admin']}>
             <Items />
           </PrivateRoute>
           <PrivateRoute path="/home">
