@@ -43,6 +43,18 @@ function getUserFromId(userId) {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
+
+  const [rolesAndPermissions, setRolesAndPermissions] = useState([]);
+
+  useEffect(() => {
+    const getServerRoles = async () => {
+      const { data } = await axios.get('/api/roles');
+      const mappedData = data.map(role => ({ name: role.name, permissions: role.permissions }));
+      setRolesAndPermissions(mappedData);
+    };
+    getServerRoles();
+  }, []);
+
   const [user, setUser] = useState(null);
   // Wrap any Firebase methods we want to use making sure ...
   // ... to save the user to state.
@@ -58,10 +70,19 @@ function useProvideAuth() {
       password
     })
       .then((response) => {
+        const currentUserPermissions = response.data.roles.flatMap((role) => (
+          rolesAndPermissions.flatMap(roleAndPer => {
+            if (roleAndPer.name === role) {
+              return roleAndPer.permissions;
+            }
+          })
+        ));
+
         setUser({
           name: response.data.name,
           user: response.data.user,
           roles: response.data.roles,
+          permissions: currentUserPermissions,
           token: response.data.token
         });
         cb();

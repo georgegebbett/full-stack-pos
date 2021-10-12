@@ -30,7 +30,7 @@ export default function NewUserDialog(props) {
     const fetchServerRoles = async () => {
       const serverRoles = (await axios.get('/api/roles'));
       setRoles(serverRoles.data);
-    }
+    };
     fetchServerRoles();
   }, []);
 

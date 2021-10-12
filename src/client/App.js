@@ -24,19 +24,19 @@ export default function App() {
       <Router>
         <MyAppBar />
         <Switch>
-          <PrivateRoute path="/tables/:tableId/order" roles={['user']}>
+          <PrivateRoute path="/tables/:tableId/order" permission="order:read">
             <OrderScreen />
           </PrivateRoute>
-          <PrivateRoute path="/tables/:tableId/tender" roles={['user']}>
+          <PrivateRoute path="/tables/:tableId/tender" permission="tender:read">
             <TenderScreen />
           </PrivateRoute>
-          <PrivateRoute path="/tables" roles={['user']}>
+          <PrivateRoute path="/tables" permission="order:read">
             <Tables />
           </PrivateRoute>
-          <PrivateRoute path="/users" roles={['admin']}>
+          <PrivateRoute path="/users" permission="user:read">
             <Users />
           </PrivateRoute>
-          <PrivateRoute path="/items" roles={['admin']}>
+          <PrivateRoute path="/items" permission="items:read">
             <Items />
           </PrivateRoute>
           <PrivateRoute path="/home">

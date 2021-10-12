@@ -28,17 +28,26 @@ export default function Items() {
   const [bannerOpen, setBannerOpen] = useState(false);
   const [bannerItem, setBannerItem] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [dataRefreshing, setDataRefreshing] = useState(false);
 
   const closeBanner = () => {
     setBannerOpen(false);
   };
 
-  useEffect(async () => {
-    const { data } = await axios.get('/api/items');
-    setItems(data);
-    setLoading(false);
-    console.log(dialogOpen);
-  });
+  useEffect(() => {
+    const getServerItems = async () => {
+      setLoading(true);
+      const { data } = await axios.get('/api/items');
+      setItems(data);
+      setLoading(false);
+    };
+
+    getServerItems();
+  }, [dataRefreshing]);
+
+  const refreshData = () => {
+    setDataRefreshing(!dataRefreshing);
+  };
 
   const deleteItem = (itemId) => {
     setLoading(true);
@@ -52,7 +61,7 @@ export default function Items() {
         console.log(err);
       })
       .finally(() => {
-        setLoading(false);
+        refreshData();
       });
   };
 
@@ -65,6 +74,7 @@ export default function Items() {
   const handleClose = () => {
     console.log('Handle close called');
     setDialogOpen(false);
+    refreshData();
   };
 
   return (
@@ -108,5 +118,3 @@ export default function Items() {
     ))
   );
 }
-
-

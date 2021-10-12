@@ -1,22 +1,29 @@
 import { Redirect, Route } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useAuth } from './use-auth';
 
-export default function PrivateRoute({ children, ...rest }) {
+export default function PrivateRoute({ children, permissions: permission, ...rest }) {
   const auth = useAuth();
+
   return (
     <Route
       {...rest}
-      render={({ location }) => (auth.user ? (
-        children
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            state: { from: location }
-          }}
-        />
-      ))
+      render={
+        ({ location }) => (
+          (
+            auth.user && (auth.user.permissions.includes(permission) || permission === undefined)
+          )
+            ? (
+              children
+            ) : (
+              <Redirect
+                to={{
+                  pathname: '/login',
+                  state: { from: location }
+                }}
+              />
+            ))
       }
     />
   );
