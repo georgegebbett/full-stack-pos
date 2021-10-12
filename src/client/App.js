@@ -12,6 +12,7 @@ import Users from './views/users/users';
 import Home from './views/home/home';
 import About from './views/about/about';
 import OrderScreen from './views/tables/order/order';
+import TenderScreen from './views/tables/tender/tender';
 import Tables from './views/tables/tables';
 import Items from './views/items/items';
 import { ProvideAuth } from './controllers/use-auth';
@@ -25,6 +26,9 @@ export default function App() {
         <Switch>
           <PrivateRoute path="/tables/:tableId/order" roles={['user']}>
             <OrderScreen />
+          </PrivateRoute>
+          <PrivateRoute path="/tables/:tableId/tender" roles={['user']}>
+            <TenderScreen />
           </PrivateRoute>
           <PrivateRoute path="/tables" roles={['user']}>
             <Tables />

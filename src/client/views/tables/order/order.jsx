@@ -50,6 +50,14 @@ export default function OrderScreen() {
       });
   };
 
+  const submitOrderAndTender = () => {
+    axios.post(`/api/tables/${tableId}/orders`, { orderItems, orderTotal })
+      .then((order) => {
+        console.log('Order submitted:', order);
+        history.push(`/tables/${tableId}/tender`);
+      });
+  };
+
   return (
     <div className="orderDiv">
       <Box className="orderButtons">
@@ -86,6 +94,14 @@ export default function OrderScreen() {
             onClick={submitOrder}
           >
             Send
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            color="warning"
+            onClick={submitOrderAndTender}
+          >
+            Send & Tender
           </Button>
           <Button
             variant="contained"

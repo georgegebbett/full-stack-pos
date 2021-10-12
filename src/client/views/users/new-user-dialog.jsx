@@ -27,9 +27,12 @@ export default function NewUserDialog(props) {
   const [newUserPassword, setNewUserPassword] = useState('');
 
   useEffect(async () => {
-    const serverRoles = (await axios.get('/api/roles'));
-    setRoles(serverRoles.data);
-  });
+    const fetchServerRoles = async () => {
+      const serverRoles = (await axios.get('/api/roles'));
+      setRoles(serverRoles.data);
+    }
+    fetchServerRoles();
+  }, []);
 
   const handleRoleChange = (roleName, event) => {
     console.log(roleName, event.target.checked);

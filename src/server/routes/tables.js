@@ -52,23 +52,25 @@ module.exports = function (app) {
     });
 
   app.route('/api/tables/:tableId/orders')
+    .get((req, res) => {
+      Table.findById(req.params.tableId)
+        .then((foundTable) => {
+          res.json(foundTable.orders);
+        })
+        .catch(() => {
+          res.sendStatus(404);
+        });
+    })
     .post((req, res) => {
       bodyParser.json();
+      console.log(req.body);
       Table.findById(req.params.tableId)
         .then(foundTable => {
-          Order.create({
-            items: req.body.orderItems
-          })
-            .then(createdOrder => {
-              foundTable.orders = [...foundTable.orders, createdOrder._id];
-              foundTable.totalPrice = foundTable.totalPrice + req.body.orderTotal;
-              foundTable.save()
-                .then(() => {
-                  res.sendStatus(201);
-                });
-            })
-            .catch(() => {
-              res.sendStatus(500);
+          foundTable.orders = [...foundTable.orders, req.body.orderItems];
+          foundTable.totalPrice = foundTable.totalPrice + req.body.orderTotal;
+          foundTable.save()
+            .then(()=> {
+              res.sendStatus(200)
             });
         })
         .catch(() => {

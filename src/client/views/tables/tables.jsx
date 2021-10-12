@@ -19,6 +19,11 @@ const LinkBehavior = React.forwardRef((props, ref) => (
   <RouterLink ref={ref} to="/" {...props} role={undefined} />
 ));
 
+function toFixed(num, fixed) {
+  const re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
+  return num.toString().match(re)[0];
+}
+
 
 export default function Tables() {
   const auth = useAuth();
@@ -50,7 +55,9 @@ export default function Tables() {
                 <TableCell component="th" scope="row">
                   {table.tableNumber}
                 </TableCell>
-                <TableCell align="right">{table.totalPrice}</TableCell>
+                <TableCell align="right">
+                  £{toFixed(table.totalPrice, 2)}
+                </TableCell>
                 <TableCell align="right">
                   <Button variant="contained" component={RouterLink} to={`/tables/${table._id}/order`}>Order Entry</Button>
                 </TableCell>
@@ -59,7 +66,8 @@ export default function Tables() {
                     variant="contained"
                     color="warning"
                     id={table._id}
-                    onClick={null}
+                    component={RouterLink}
+                    to={`/tables/${table._id}/tender`}
                   >
                     Tender
                   </Button>

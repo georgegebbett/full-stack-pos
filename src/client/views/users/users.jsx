@@ -24,6 +24,7 @@ export default function Users() {
   const auth = useAuth();
   const [users, setUsers] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [refreshData, setRefreshData] = useState(false);
 
   const handleClickOpen = () => {
     console.log('Handle open called');
@@ -33,17 +34,27 @@ export default function Users() {
   const handleClose = () => {
     console.log('Handle close called');
     setDialogOpen(false);
+    refreshTable();
   };
 
-  useEffect(async () => {
-    const { data } = await axios.get('/api/users');
-    setUsers(data);
-  });
+  useEffect( () => {
+    const fetchUserData = async () => {
+      const { data } = await axios.get('/api/users');
+      setUsers(data);
+    };
+    fetchUserData();
+    console.log(users);
+  },[refreshData]);
+
+  const refreshTable = () => {
+    setRefreshData(!refreshData);
+  };
 
   const deleteUser = (userId) => {
     axios.delete(`/api/users/${userId}`)
       .then((res) => {
         console.log(res);
+        refreshTable();
       })
       .catch((err) => {
         console.log(err);
