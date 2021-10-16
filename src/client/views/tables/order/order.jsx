@@ -100,7 +100,7 @@ export default function OrderScreen() {
                   <TableCell>{orderItem.name}</TableCell>
                   <TableCell>
                     £
-                    {orderItem.price}
+                    {orderItem.price / 100}
                   </TableCell>
                 </TableRow>
               ))}
