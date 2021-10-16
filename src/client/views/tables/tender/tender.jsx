@@ -19,6 +19,7 @@ import './tender.css';
 import axios from 'axios';
 import TenderAmountDialog from './tender-amount-dialog';
 import ChangeDialog from './change-dialog';
+import { currencyFormatter } from '../../../controllers/currencyFormatter';
 
 export default function TenderScreen() {
   const [tableOrders, setTableOrders] = useState([]);
@@ -117,8 +118,7 @@ export default function TenderScreen() {
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell>{tableItem.name}</TableCell>
                   <TableCell>
-                    £
-                    {(tableItem.price / 100)}
+                    {currencyFormatter.format(tableItem.price / 100)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -127,8 +127,7 @@ export default function TenderScreen() {
                   <TableCell>{tableTender.type}</TableCell>
                   <TableCell>
                     <b>
-                      £
-                      {(tableTender.amount / 100)}
+                      {currencyFormatter.format(tableTender.amount / 100)}
                     </b>
                   </TableCell>
                 </TableRow>
@@ -138,8 +137,7 @@ export default function TenderScreen() {
               <TableRow>
                 <TableCell>{(tableTotal > 0 ? 'Total' : 'Change')}</TableCell>
                 <TableCell>
-                  £
-                  {(tableTotal / 100)}
+                  {currencyFormatter.format(tableTotal / 100)}
                 </TableCell>
               </TableRow>
             </TableFooter>
