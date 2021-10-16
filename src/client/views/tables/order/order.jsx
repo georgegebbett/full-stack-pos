@@ -110,7 +110,7 @@ export default function OrderScreen() {
                 <TableCell>Total</TableCell>
                 <TableCell>
                   £
-                  {orderTotal}
+                  {orderTotal / 100}
                 </TableCell>
               </TableRow>
             </TableFooter>
