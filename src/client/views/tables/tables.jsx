@@ -19,12 +19,6 @@ const LinkBehavior = React.forwardRef((props, ref) => (
   <RouterLink ref={ref} to="/" {...props} role={undefined} />
 ));
 
-function toFixed(num, fixed) {
-  const re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
-  return num.toString().match(re)[0];
-}
-
-
 export default function Tables() {
   const auth = useAuth();
   const [tables, setTables] = useState([]);
@@ -61,7 +55,7 @@ export default function Tables() {
                   {table.tableNumber}
                 </TableCell>
                 <TableCell align="right">
-                  £{toFixed(table.totalPrice, 2)}
+                  £{(table.totalPrice / 100)}
                 </TableCell>
                 <TableCell align="right">
                   <Button variant="contained" component={RouterLink} to={`/tables/${table._id}/order`}>Order Entry</Button>

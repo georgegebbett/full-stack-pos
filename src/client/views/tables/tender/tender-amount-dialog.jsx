@@ -16,10 +16,13 @@ import { useHistory, useParams } from 'react-router-dom';
 
 
 export default function TenderAmountDialog(props) {
-  const [tenderAmount, setTenderAmount] = useState(0.0);
+  const [tenderAmount, setTenderAmount] = useState(0);
   const { tableId } = useParams();
   const history = useHistory();
 
+  useEffect(() => {
+    setTenderAmount(props.remainingValue);
+  }, [props.remainingValue]);
 
   const postTenderToTableApi = () => {
     axios.post(`/api/tables/${tableId}/tender`, {
@@ -57,8 +60,8 @@ export default function TenderAmountDialog(props) {
             type="number"
             fullWidth
             variant="standard"
-            defaultValue={props.remainingValue}
-            onChange={event => setTenderAmount(event.target.value)}
+            defaultValue={(props.remainingValue / 100)}
+            onChange={(event) => setTenderAmount((event.target.value * 100))}
           />
         </FormControl>
       </DialogContent>

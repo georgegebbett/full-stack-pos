@@ -80,7 +80,7 @@ module.exports = function (app) {
         });
     })
     .delete((req, res) => {
-      Table.deleteMany({})
+      Table.deleteMany({ open: false })
         .then(() => {
           res.sendStatus(418);
         });
@@ -122,6 +122,7 @@ module.exports = function (app) {
     })
     .post((req, res) => {
       bodyParser.json();
+      console.log('tender:', req.body);
       Table.findById(req.params.tableId)
         .then((foundTable) => {
           foundTable.totalPrice = mathjs.round(foundTable.totalPrice - req.body.tenderAmount, 2);

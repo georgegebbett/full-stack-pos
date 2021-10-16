@@ -23,7 +23,8 @@ export default function ChangeDialog(props) {
       <DialogTitle>Change amount</DialogTitle>
       <DialogContent>
         <Typography variant="h2">
-          £{props.changeAmount}
+          £
+          {(props.changeAmount / 100)}
         </Typography>
       </DialogContent>
       <DialogActions>

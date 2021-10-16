@@ -26,7 +26,7 @@ export default function NewItemDialog(props) {
     axios.post('/api/items', {
       name: newItemName,
       category: newItemCategory,
-      price: newItemPrice
+      price: (newItemPrice * 100)
     })
       .then((res) => {
         console.log(res.data);

@@ -39,6 +39,8 @@ export default function EditItemDialog(props) {
       });
   };
 
+  //TODO - this is not even nearly finished - atm it is just a rip off of the new item dialog
+
   return (
     <Dialog open={props.dialogOpen} onClose={props.handleClose} itemID={props.itemId}>
       <DialogTitle>Edit item</DialogTitle>

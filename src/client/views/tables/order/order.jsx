@@ -18,6 +18,7 @@ import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
 import './order.css';
 import axios from 'axios';
 import { round } from 'mathjs';
+import { currencyFormatter } from '../../../controllers/currencyFormatter';
 
 export default function OrderScreen() {
   const [items, setItems] = useState([]);
@@ -99,8 +100,7 @@ export default function OrderScreen() {
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell>{orderItem.name}</TableCell>
                   <TableCell>
-                    £
-                    {orderItem.price}
+                    {currencyFormatter.format(orderItem.price / 100)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -109,8 +109,7 @@ export default function OrderScreen() {
               <TableRow>
                 <TableCell>Total</TableCell>
                 <TableCell>
-                  £
-                  {orderTotal}
+                  {currencyFormatter.format(orderTotal / 100)}
                 </TableCell>
               </TableRow>
             </TableFooter>
