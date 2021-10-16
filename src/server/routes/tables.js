@@ -80,7 +80,7 @@ module.exports = function (app) {
         });
     })
     .delete((req, res) => {
-      Table.deleteMany({})
+      Table.deleteMany({ open: false })
         .then(() => {
           res.sendStatus(418);
         });
