@@ -16,12 +16,6 @@ import NewItemDialog from './new-item-dialog';
 import EditItemDialog from './edit-item-dialog';
 
 import './items.css';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import TextField from '@mui/material/TextField';
-import DialogActions from '@mui/material/DialogActions';
 import { useAuth } from '../../controllers/use-auth';
 
 export default function Items() {
@@ -100,7 +94,11 @@ export default function Items() {
     ) : (
       <TableContainer component={Paper}>
         <NewItemDialog dialogOpen={newItemDialogOpen} handleClose={handleNewItemDialogClose} />
-        <EditItemDialog dialogOpen={editItemDialogOpen} handleClose={handleEditItemDialogClose} itemId={editingItemId} />
+        <EditItemDialog
+          dialogOpen={editItemDialogOpen}
+          handleClose={handleEditItemDialogClose}
+          itemId={editingItemId}
+        />
         <SuccessToast open={bannerOpen} handleClose={closeBanner} bannerItem={bannerItem} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="itemTable">
           <TableHead>

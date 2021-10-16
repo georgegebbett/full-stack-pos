@@ -96,6 +96,7 @@ export default function TenderScreen() {
           dialogOpen={tenderDialogOpen}
           handleClose={handleTenderAmountDialogClose}
           handleCloseWithChange={amount => handleTenderAmountDialogCloseWithChange(amount)}
+          remainingValue={tableTotal}
           tenderType={tenderType}
         />
         <ChangeDialog

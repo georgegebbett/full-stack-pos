@@ -15,7 +15,6 @@ import {
 import { useHistory, useParams } from 'react-router-dom';
 
 
-
 export default function TenderAmountDialog(props) {
   const [tenderAmount, setTenderAmount] = useState(0.0);
   const { tableId } = useParams();
@@ -39,7 +38,7 @@ export default function TenderAmountDialog(props) {
       .catch((err) => {
         console.log(err);
         props.handleClose();
-      })
+      });
   };
 
   return (
@@ -58,6 +57,7 @@ export default function TenderAmountDialog(props) {
             type="number"
             fullWidth
             variant="standard"
+            defaultValue={props.remainingValue}
             onChange={event => setTenderAmount(event.target.value)}
           />
         </FormControl>
