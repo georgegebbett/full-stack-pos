@@ -118,7 +118,7 @@ export default function TenderScreen() {
                   <TableCell>{tableItem.name}</TableCell>
                   <TableCell>
                     £
-                    {tableItem.price}
+                    {(tableItem.price / 100)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -128,7 +128,7 @@ export default function TenderScreen() {
                   <TableCell>
                     <b>
                       £
-                      {tableTender.amount}
+                      {(tableTender.amount / 100)}
                     </b>
                   </TableCell>
                 </TableRow>
@@ -139,7 +139,7 @@ export default function TenderScreen() {
                 <TableCell>{(tableTotal > 0 ? 'Total' : 'Change')}</TableCell>
                 <TableCell>
                   £
-                  {tableTotal}
+                  {(tableTotal / 100)}
                 </TableCell>
               </TableRow>
             </TableFooter>

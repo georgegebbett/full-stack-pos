@@ -77,7 +77,7 @@ export default function ViewClosedTable() {
                   <TableCell>{tableItem.name}</TableCell>
                   <TableCell>
                     £
-                    {tableItem.price}
+                    {(tableItem.price / 100)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -87,7 +87,7 @@ export default function ViewClosedTable() {
                   <TableCell>
                     <b>
                       £
-                      {tableTender.amount}
+                      {(tableTender.amount / 100)}
                     </b>
                   </TableCell>
                 </TableRow>
@@ -98,7 +98,7 @@ export default function ViewClosedTable() {
                 <TableCell>{(tableTotal > 0 ? 'Total' : 'Change')}</TableCell>
                 <TableCell>
                   £
-                  {abs(tableTotal)}
+                  {abs(tableTotal / 100)}
                 </TableCell>
               </TableRow>
             </TableFooter>
