@@ -14,6 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import { Link as RouterLink } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { currencyFormatter } from '../../controllers/currencyFormatter';
 
 const LinkBehavior = React.forwardRef((props, ref) => (
   <RouterLink ref={ref} to="/" {...props} role={undefined} />
@@ -55,7 +56,7 @@ export default function Tables() {
                   {table.tableNumber}
                 </TableCell>
                 <TableCell align="right">
-                  £{(table.totalPrice / 100)}
+                  {currencyFormatter.format(table.totalPrice / 100)}
                 </TableCell>
                 <TableCell align="right">
                   <Button variant="contained" component={RouterLink} to={`/tables/${table._id}/order`}>Order Entry</Button>
