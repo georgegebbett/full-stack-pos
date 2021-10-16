@@ -18,6 +18,7 @@ import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
 import './viewClosedTable.css';
 import axios from 'axios';
 import { abs } from 'mathjs';
+import { currencyFormatter } from '../../../controllers/currencyFormatter';
 
 export default function ViewClosedTable() {
   const [tableOrders, setTableOrders] = useState([]);
@@ -76,8 +77,7 @@ export default function ViewClosedTable() {
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell>{tableItem.name}</TableCell>
                   <TableCell>
-                    £
-                    {(tableItem.price / 100)}
+                    {currencyFormatter.format(tableItem.price / 100)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -86,8 +86,7 @@ export default function ViewClosedTable() {
                   <TableCell>{tableTender.type}</TableCell>
                   <TableCell>
                     <b>
-                      £
-                      {(tableTender.amount / 100)}
+                      {currencyFormatter.format(tableTender.amount / 100)}
                     </b>
                   </TableCell>
                 </TableRow>
@@ -97,8 +96,7 @@ export default function ViewClosedTable() {
               <TableRow>
                 <TableCell>{(tableTotal > 0 ? 'Total' : 'Change')}</TableCell>
                 <TableCell>
-                  £
-                  {abs(tableTotal / 100)}
+                  {currencyFormatter.format(abs(tableTotal / 100))}
                 </TableCell>
               </TableRow>
             </TableFooter>

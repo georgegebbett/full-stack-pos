@@ -17,6 +17,7 @@ import EditItemDialog from './edit-item-dialog';
 
 import './items.css';
 import { useAuth } from '../../controllers/use-auth';
+import { currencyFormatter } from '../../controllers/currencyFormatter';
 
 export default function Items() {
   const [items, setItems] = useState([]);
@@ -121,7 +122,7 @@ export default function Items() {
                   {row.name}
                 </TableCell>
                 <TableCell align="right">{row.category}</TableCell>
-                <TableCell align="right">{(row.price / 100)}</TableCell>
+                <TableCell align="right">{currencyFormatter.format(row.price / 100)}</TableCell>
                 <TableCell align="right">
                   <Button
                     variant="contained"
