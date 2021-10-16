@@ -121,7 +121,7 @@ export default function Items() {
                   {row.name}
                 </TableCell>
                 <TableCell align="right">{row.category}</TableCell>
-                <TableCell align="right">{row.price}</TableCell>
+                <TableCell align="right">{(row.price/1000)}</TableCell>
                 <TableCell align="right">
                   <Button
                     variant="contained"
