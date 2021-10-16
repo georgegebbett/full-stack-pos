@@ -8,16 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../controllers/use-auth';
 import { Button } from '@mui/material';
-import NewUserDialog from './new-user-dialog';
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
-
-function createData(name, username) {
-  return { name, username };
-}
-
+import NewUserDialog from './new-user-dialog';
+import { useAuth } from '../../controllers/use-auth';
 
 
 export default function Users() {
@@ -37,14 +32,14 @@ export default function Users() {
     refreshTable();
   };
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchUserData = async () => {
       const { data } = await axios.get('/api/users');
       setUsers(data);
     };
     fetchUserData();
     console.log(users);
-  },[refreshData]);
+  }, [refreshData]);
 
   const refreshTable = () => {
     setRefreshData(!refreshData);
@@ -85,14 +80,21 @@ export default function Users() {
               </TableCell>
               <TableCell align="right">{row.username}</TableCell>
               <TableCell align="right">{row.roles.toString()}</TableCell>
-              <TableCell align="right"><Button variant="contained">Edit</Button></TableCell>
+              <TableCell align="right">
+                <Button
+                  variant="contained"
+                  disabled={!(auth.user.permissions.includes('user:write'))}
+                >
+                  Edit
+                </Button>
+              </TableCell>
               <TableCell align="right">
                 <Button
                   variant="contained"
                   color="error"
                   id={row._id}
                   onClick={event => deleteUser(event.target.id)}
-                  disabled={(auth.user.user === row.username)}
+                  disabled={auth.user.user === row.username || !(auth.user.permissions.includes('user:write'))}
                 >
                   Delete
                 </Button>
@@ -101,9 +103,15 @@ export default function Users() {
           ))}
         </TableBody>
       </Table>
-      <Fab onClick={handleClickOpen}>
-        <AddIcon />
-      </Fab>
+      {(
+        auth.user.permissions.includes('user:write')
+          ? (
+            <Fab onClick={handleClickOpen}>
+              <AddIcon />
+            </Fab>
+          )
+          : null
+      )}
     </TableContainer>
   );
 }

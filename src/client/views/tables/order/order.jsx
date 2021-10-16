@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper, Grid, Typography, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
+  Paper,
+  Grid,
+  Typography,
+  Box,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableFooter
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
@@ -12,12 +23,16 @@ export default function OrderScreen() {
   const [orderItems, setOrderItems] = useState([]);
   const [orderTotal, setOrderTotal] = useState(0);
 
-  useEffect(async () => {
+  useEffect(() => {
     document.title = 'Order Entry';
 
-    const { data } = await axios.get('/api/items');
-    setItems(data);
-  });
+    const getItems = async () => {
+      const { data } = await axios.get('/api/items');
+      setItems(data);
+    };
+
+    getItems();
+  }, []);
 
   const Item = styled(Paper)({
     color: 'darkslategray',
@@ -71,19 +86,33 @@ export default function OrderScreen() {
       </Box>
       <Box>
         <TableContainer component={Paper} className="orderPaper">
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell align="left">Item</TableCell>
                 <TableCell align="left">Price</TableCell>
               </TableRow>
             </TableHead>
-            {orderItems.map(orderItem => (
-              <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell>{orderItem.name}</TableCell>
-                <TableCell>{orderItem.price}</TableCell>
+            <TableBody>
+              {orderItems.map(orderItem => (
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell>{orderItem.name}</TableCell>
+                  <TableCell>
+                    £
+                    {orderItem.price}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell>Total</TableCell>
+                <TableCell>
+                  £
+                  {orderTotal}
+                </TableCell>
               </TableRow>
-            ))}
+            </TableFooter>
           </Table>
         </TableContainer>
         <Box>

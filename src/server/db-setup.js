@@ -16,7 +16,9 @@ const tableSchema = new mongoose.Schema({
   tableNumber: Number,
   totalPrice: Number,
   orders: Array,
-  open: Boolean
+  open: Boolean,
+  openTime: Date,
+  closTime: Date
 });
 
 const orderItemSchema = new mongoose.Schema({

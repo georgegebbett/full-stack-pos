@@ -29,10 +29,15 @@ export default function Tables() {
   const auth = useAuth();
   const [tables, setTables] = useState([]);
 
-  useEffect(async () => {
-    const { data } = await axios.get('/api/tables');
-    setTables(data);
-  });
+  useEffect(() => {
+
+    const getTableData = async () => {
+      const { data } = await axios.get('/api/tables?open=true');
+      setTables(data);
+    };
+
+    getTableData();
+  }, []);
 
   return (
     <Box>

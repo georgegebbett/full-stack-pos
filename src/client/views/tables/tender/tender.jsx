@@ -1,62 +1,100 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper, Grid, Typography, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
+  Paper,
+  Grid,
+  Typography,
+  Box,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableFooter
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
 import './tender.css';
 import axios from 'axios';
+import TenderAmountDialog from './tender-amount-dialog';
 
 export default function TenderScreen() {
   const [tableOrders, setTableOrders] = useState([]);
   const [tableItems, setTableItems] = useState([]);
+  const [tableTotal, setTableTotal] = useState([]);
+  const [tenderDialogOpen, setTenderDialogOpen] = useState(false);
+  const [tenderType, setTenderType] = useState('');
+  const [updateData, setUpdateData] = useState(false);
   const { tableId } = useParams();
   const history = useHistory();
 
-  useEffect(async () => {
-    document.title = 'Tender';
-    const { data } = await axios.get(`/api/tables/${tableId}/orders`);
-    setTableOrders(data);
+  useEffect(() => {
+    const getTableData = async () => {
+      console.log('data fetched');
+      document.title = 'Tender';
+      axios.get(`/api/tables/${tableId}/orders`)
+        .then((res) => {
+          setTableOrders(res.data);
+          console.log('Table orders', res.data);
+          const items = res.data.flatMap(order => (
+            order.map(item => ({
+              name: item.name,
+              price: item.price
+            }))
+          ));
+          setTableItems(items);
+        });
+      axios.get(`/api/tables/${tableId}`)
+        .then((res) => {
+          setTableTotal(res.data.totalPrice);
+        });
+    };
 
-    const items = tableOrders.flatMap((order) => (
-      order.map((item) => ({
-        name: item.name,
-        price: item.price
-      }))
-    ));
+    getTableData();
+  }, [updateData]);
 
-    setTableItems(items)
+  const handleTenderAmountDialogOpen = (tenderButtonCaption) => {
+    setTenderType(tenderButtonCaption);
+    setTenderDialogOpen(true);
+  };
 
-  });
-
-  const Item = styled(Paper)({
-    color: 'darkslategray',
-    backgroundColor: 'aliceblue',
-    padding: 8,
-    borderRadius: 4,
-    height: 90,
-    width: 90
-  });
-
-
+  const handleTenderAmountDialogClose = () => {
+    console.log('New item dialog close called');
+    setTenderDialogOpen(false);
+    setUpdateData(!updateData);
+  };
 
   return (
     <div className="orderDiv">
       <Box>
+        <TenderAmountDialog
+          dialogOpen={tenderDialogOpen}
+          handleClose={handleTenderAmountDialogClose}
+          tenderType={tenderType}
+        />
         <TableContainer component={Paper} className="orderPaper">
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell align="left">Item</TableCell>
                 <TableCell align="left">Price</TableCell>
               </TableRow>
             </TableHead>
-            {tableItems.map(tableItem => (
-              <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell>{tableItem.name}</TableCell>
-                <TableCell>{tableItem.price}</TableCell>
+            <TableBody>
+              {tableItems.map(tableItem => (
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell>{tableItem.name}</TableCell>
+                  <TableCell>£{tableItem.price}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell>Total</TableCell>
+                <TableCell>£{tableTotal}</TableCell>
               </TableRow>
-            ))}
+            </TableFooter>
           </Table>
         </TableContainer>
         <Box>
@@ -64,7 +102,7 @@ export default function TenderScreen() {
             variant="contained"
             size="large"
             color="success"
-            onClick={null}
+            onClick={() => handleTenderAmountDialogOpen('CARD')}
           >
             Card
           </Button>
@@ -72,7 +110,7 @@ export default function TenderScreen() {
             variant="contained"
             size="large"
             color="success"
-            onClick={null}
+            onClick={() => handleTenderAmountDialogOpen('CASH')}
           >
             Cash
           </Button>

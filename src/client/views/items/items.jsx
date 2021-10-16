@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import SuccessToast from './success-message';
 import NewItemDialog from './new-item-dialog';
+import EditItemDialog from './edit-item-dialog';
 
 import './items.css';
 import Dialog from '@mui/material/Dialog';
@@ -21,13 +22,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
+import { useAuth } from '../../controllers/use-auth';
 
 export default function Items() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bannerOpen, setBannerOpen] = useState(false);
   const [bannerItem, setBannerItem] = useState('');
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newItemDialogOpen, setNewItemDialogOpen] = useState(false);
+  const [editItemDialogOpen, setEditItemDialogOpen] = useState(false);
+  const [editingItemId, setEditingItemId] = useState('');
   const [dataRefreshing, setDataRefreshing] = useState(false);
 
   const closeBanner = () => {
@@ -65,24 +69,38 @@ export default function Items() {
       });
   };
 
+  const handleEditItemDialogOpen = (itemId) => {
+    setEditingItemId(itemId);
+    setEditItemDialogOpen(true);
+  };
+
 
   const handleClickOpen = () => {
     console.log('Handle open called');
-    setDialogOpen(true);
+    setNewItemDialogOpen(true);
   };
 
-  const handleClose = () => {
-    console.log('Handle close called');
-    setDialogOpen(false);
+  const handleNewItemDialogClose = () => {
+    console.log('New item dialog close called');
+    setNewItemDialogOpen(false);
     refreshData();
   };
+
+  const handleEditItemDialogClose = () => {
+    console.log('Edit item dialog close called');
+    setEditItemDialogOpen(false);
+    refreshData();
+  };
+
+  const auth = useAuth();
 
   return (
     (loading ? (
       <Typography variant="h1">Loading!</Typography>
     ) : (
       <TableContainer component={Paper}>
-        <NewItemDialog dialogOpen={dialogOpen} handleClose={handleClose} />
+        <NewItemDialog dialogOpen={newItemDialogOpen} handleClose={handleNewItemDialogClose} />
+        <EditItemDialog dialogOpen={editItemDialogOpen} handleClose={handleEditItemDialogClose} itemId={editingItemId} />
         <SuccessToast open={bannerOpen} handleClose={closeBanner} bannerItem={bannerItem} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="itemTable">
           <TableHead>
@@ -98,6 +116,7 @@ export default function Items() {
             {items.map(row => (
               <TableRow
                 key={row._id}
+                id={row._id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -105,15 +124,42 @@ export default function Items() {
                 </TableCell>
                 <TableCell align="right">{row.category}</TableCell>
                 <TableCell align="right">{row.price}</TableCell>
-                <TableCell align="right"><Button variant="contained">Edit</Button></TableCell>
-                <TableCell align="right"><Button id={row._id} variant="contained" color="error" onClick={(event) => { deleteItem(event.target.id); }}>Delete</Button></TableCell>
+                <TableCell align="right">
+                  <Button
+                    variant="contained"
+                    disabled={(!auth.user.permissions.includes('item:write'))}
+                    onClick={(event) => {
+                      handleEditItemDialogOpen(event.target.parentElement.parentElement.id);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </TableCell>
+                <TableCell align="right">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    disabled={(!auth.user.permissions.includes('item:write'))}
+                    onClick={(event) => {
+                      deleteItem(event.target.parentElement.parentElement.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        <Fab onClick={handleClickOpen}>
-          <AddIcon />
-        </Fab>
+        {(auth.user.permissions.includes('item:write')
+          ? (
+            <Fab onClick={handleClickOpen}>
+              <AddIcon />
+            </Fab>
+          )
+          : null
+          )}
+
       </TableContainer>
     ))
   );

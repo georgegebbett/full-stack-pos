@@ -36,7 +36,7 @@ export default function App() {
           <PrivateRoute path="/users" permission="user:read">
             <Users />
           </PrivateRoute>
-          <PrivateRoute path="/items" permission="items:read">
+          <PrivateRoute path="/items" permission="item:read">
             <Items />
           </PrivateRoute>
           <PrivateRoute path="/home">

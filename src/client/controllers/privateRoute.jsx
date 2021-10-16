@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from './use-auth';
 
-export default function PrivateRoute({ children, permissions: permission, ...rest }) {
+export default function PrivateRoute({ children, permission, ...rest }) {
   const auth = useAuth();
 
   return (
