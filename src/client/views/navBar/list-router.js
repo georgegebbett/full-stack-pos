@@ -10,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
+import RestoreIcon from '@mui/icons-material/Restore';
 import FoodBankIcon from '@mui/icons-material/FoodBank';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { Link as RouterLink, Route, MemoryRouter } from 'react-router-dom';
@@ -50,6 +51,7 @@ export default function ListRouter() {
         <List aria-label="main functions">
           <ListItemLink to="/home" primary="Home" icon={<HomeIcon />} />
           {auth.user.permissions.includes('order:read') ? <ListItemLink to="/tables" primary="Tables" icon={<RestaurantIcon />} /> : null}
+          {auth.user.permissions.includes('closedTable:read') ? <ListItemLink to="/closedTables" primary="Closed Tables" icon={<RestoreIcon />} /> : null}
         </List>
         <Divider />
         <List aria-label="secondary functions">

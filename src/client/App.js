@@ -15,6 +15,8 @@ import OrderScreen from './views/tables/order/order';
 import TenderScreen from './views/tables/tender/tender';
 import Tables from './views/tables/tables';
 import Items from './views/items/items';
+import ClosedTables from './views/closedTables/closedTables';
+import ViewClosedTable from './views/closedTables/viewClosedTable/viewClosedTable';
 import { ProvideAuth } from './controllers/use-auth';
 import PrivateRoute from './controllers/privateRoute';
 
@@ -30,8 +32,14 @@ export default function App() {
           <PrivateRoute path="/tables/:tableId/tender" permission="tender:read">
             <TenderScreen />
           </PrivateRoute>
+          <PrivateRoute path="/tables/:tableId/viewClosedTable" permission="closedTable:read">
+            <ViewClosedTable />
+          </PrivateRoute>
           <PrivateRoute path="/tables" permission="order:read">
             <Tables />
+          </PrivateRoute>
+          <PrivateRoute path="/closedTables" permission="closedTable:read">
+            <ClosedTables />
           </PrivateRoute>
           <PrivateRoute path="/users" permission="user:read">
             <Users />

@@ -25,14 +25,14 @@ function toFixed(num, fixed) {
 }
 
 
-export default function Tables() {
+export default function ClosedTables() {
   const auth = useAuth();
   const [tables, setTables] = useState([]);
 
   useEffect(() => {
 
     const getTableData = async () => {
-      const { data } = await axios.get('/api/tables?open=true');
+      const { data } = await axios.get('/api/tables?open=false');
       setTables(data);
     };
 
@@ -46,9 +46,8 @@ export default function Tables() {
           <TableHead>
             <TableRow>
               <TableCell>Table Number</TableCell>
-              <TableCell align="right">Current Total</TableCell>
-              <TableCell align="right">Order Entry</TableCell>
-              <TableCell align="right">Tender</TableCell>
+              <TableCell align="right">Closed at</TableCell>
+              <TableCell align="right">View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -61,21 +60,15 @@ export default function Tables() {
                   {table.tableNumber}
                 </TableCell>
                 <TableCell align="right">
-                  £{toFixed(table.totalPrice, 2)}
-                </TableCell>
-                <TableCell align="right">
-                  <Button variant="contained" component={RouterLink} to={`/tables/${table._id}/order`}>Order Entry</Button>
+                  {table.closeTime}
                 </TableCell>
                 <TableCell align="right">
                   <Button
                     variant="contained"
-                    color="warning"
-                    id={table._id}
                     component={RouterLink}
-                    to={`/tables/${table._id}/tender`}
-                    disabled={(table.totalPrice === 0)}
+                    to={`/tables/${table._id}/viewClosedTable`}
                   >
-                    Tender
+                    View
                   </Button>
                 </TableCell>
               </TableRow>

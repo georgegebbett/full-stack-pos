@@ -15,20 +15,15 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
-import './tender.css';
+import './viewClosedTable.css';
 import axios from 'axios';
-import TenderAmountDialog from './tender-amount-dialog';
-import ChangeDialog from './change-dialog';
+import { abs } from 'mathjs';
 
-export default function TenderScreen() {
+export default function ViewClosedTable() {
   const [tableOrders, setTableOrders] = useState([]);
   const [tableTenders, setTableTenders] = useState([]);
   const [tableItems, setTableItems] = useState([]);
   const [tableTotal, setTableTotal] = useState([]);
-  const [tenderDialogOpen, setTenderDialogOpen] = useState(false);
-  const [changeDialogOpen, setChangeDialogOpen] = useState(false);
-  const [changeAmount, setChangeAmount] = useState(0);
-  const [tenderType, setTenderType] = useState('');
   const [updateData, setUpdateData] = useState(false);
   const { tableId } = useParams();
   const history = useHistory();
@@ -36,7 +31,7 @@ export default function TenderScreen() {
   useEffect(() => {
     const getTableData = async () => {
       console.log('data fetched');
-      document.title = 'Tender';
+      document.title = 'Closed Table';
       axios.get(`/api/tables/${tableId}/orders`)
         .then((res) => {
           setTableOrders(res.data);
@@ -65,44 +60,9 @@ export default function TenderScreen() {
     getTableData();
   }, [updateData]);
 
-  const handleTenderAmountDialogOpen = (tenderButtonCaption) => {
-    setTenderType(tenderButtonCaption);
-    setTenderDialogOpen(true);
-  };
-
-  const handleTenderAmountDialogClose = () => {
-    console.log('New item dialog close called');
-    setTenderDialogOpen(false);
-    setUpdateData(!updateData);
-  };
-
-  const handleTenderAmountDialogCloseWithChange = (changeAmountArg) => {
-    console.log('New item dialog close called');
-    setTenderDialogOpen(false);
-    setChangeAmount(changeAmountArg);
-    setChangeDialogOpen(true);
-    setUpdateData(!updateData);
-  };
-
-  const handleChangeDialogClose = () => {
-    setChangeDialogOpen(false);
-    history.push('/tables');
-  };
-
   return (
     <div className="orderDiv">
       <Box>
-        <TenderAmountDialog
-          dialogOpen={tenderDialogOpen}
-          handleClose={handleTenderAmountDialogClose}
-          handleCloseWithChange={amount => handleTenderAmountDialogCloseWithChange(amount)}
-          tenderType={tenderType}
-        />
-        <ChangeDialog
-          dialogOpen={changeDialogOpen}
-          handleClose={handleChangeDialogClose}
-          changeAmount={changeAmount}
-        />
         <TableContainer component={Paper} className="orderPaper">
           <Table stickyHeader>
             <TableHead>
@@ -138,39 +98,21 @@ export default function TenderScreen() {
                 <TableCell>{(tableTotal > 0 ? 'Total' : 'Change')}</TableCell>
                 <TableCell>
                   £
-                  {tableTotal}
+                  {abs(tableTotal)}
                 </TableCell>
               </TableRow>
             </TableFooter>
           </Table>
         </TableContainer>
-        <Box>
-          <Button
-            variant="contained"
-            size="large"
-            color="success"
-            onClick={() => handleTenderAmountDialogOpen('CARD')}
-          >
-            Card
-          </Button>
-          <Button
-            variant="contained"
-            size="large"
-            color="success"
-            onClick={() => handleTenderAmountDialogOpen('CASH')}
-          >
-            Cash
-          </Button>
-          <Button
-            variant="contained"
-            size="large"
-            color="error"
-            component={RouterLink}
-            to="/tables"
-          >
-            Cancel
-          </Button>
-        </Box>
+        <Button
+          variant="contained"
+          size="large"
+          color="error"
+          component={RouterLink}
+          to="/closedTables"
+        >
+          Back
+        </Button>
       </Box>
     </div>
   );

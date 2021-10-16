@@ -17,6 +17,7 @@ import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
 import './order.css';
 import axios from 'axios';
+import { round } from 'mathjs';
 
 export default function OrderScreen() {
   const [items, setItems] = useState([]);
@@ -51,7 +52,7 @@ export default function OrderScreen() {
         price: orderItem.price
       }
     ]);
-    setOrderTotal(orderTotal + orderItem.price);
+    setOrderTotal(round(orderTotal + orderItem.price, 2));
   };
 
   const { tableId } = useParams();
@@ -76,9 +77,9 @@ export default function OrderScreen() {
   return (
     <div className="orderDiv">
       <Box className="orderButtons">
-        <Grid container justifyContent="center" spacing={15}>
+        <Grid container justifyContent="center" spacing={5}>
           {items.map(item => (
-            <Grid key={item._id} item xs={1} onClick={() => addItemToOrder(item)}>
+            <Grid key={item._id} item xs={2} onClick={() => addItemToOrder(item)}>
               <Item>{item.name}</Item>
             </Grid>
           ))}

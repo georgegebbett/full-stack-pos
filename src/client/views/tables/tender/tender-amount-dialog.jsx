@@ -28,17 +28,18 @@ export default function TenderAmountDialog(props) {
       tenderAmount
     })
       .then((res) => {
-        if (res.data.success === 'table closed') {
+        if (res.data['table closed'].changeGiven) {
+          props.handleCloseWithChange(res.data['table closed'].change);
+        } else {
+          props.handleClose();
           history.push('/tables');
         }
         console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
         props.handleClose();
-      });
+      })
   };
 
   return (
