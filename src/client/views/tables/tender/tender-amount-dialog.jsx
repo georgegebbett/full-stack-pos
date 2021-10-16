@@ -57,8 +57,8 @@ export default function TenderAmountDialog(props) {
             type="number"
             fullWidth
             variant="standard"
-            defaultValue={props.remainingValue}
-            onChange={event => setTenderAmount(event.target.value)}
+            defaultValue={(props.remainingValue / 100)}
+            onChange={event => setTenderAmount(event.target.value * 100)}
           />
         </FormControl>
       </DialogContent>
