@@ -31,6 +31,8 @@ function OrderItemTable(props) {
               </TableCell>
             </TableRow>
           ))}
+          (tableTenders ?
+          (
           {tableTenders.map(tableTender => (
             <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell>{tableTender.type}</TableCell>
@@ -41,6 +43,8 @@ function OrderItemTable(props) {
               </TableCell>
             </TableRow>
           ))}
+          )
+          : null)
         </TableBody>
         <TableFooter>
           <TableRow>
@@ -57,8 +61,12 @@ function OrderItemTable(props) {
 
 OrderItemTable.propTypes = {
   tableItems: PropTypes.arrayOf(PropTypes.object).isRequired,
-  tableTenders: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tableTenders: PropTypes.arrayOf(PropTypes.object),
   tableTotal: PropTypes.number.isRequired
+};
+
+OrderItemTable.defaultProps = {
+  tableTenders: []
 };
 
 export default OrderItemTable;
