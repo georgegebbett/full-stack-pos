@@ -9,23 +9,14 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../controllers/use-auth';
-import AddIcon from '@mui/icons-material/Add';
-import Fab from '@mui/material/Fab';
 import { Link as RouterLink } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { currencyFormatter } from '../../controllers/currencyFormatter';
 
-const LinkBehavior = React.forwardRef((props, ref) => (
-  <RouterLink ref={ref} to="/" {...props} role={undefined} />
-));
-
 export default function Tables() {
-  const auth = useAuth();
   const [tables, setTables] = useState([]);
 
   useEffect(() => {
-
     const getTableData = async () => {
       const { data } = await axios.get('/api/tables?open=true');
       setTables(data);
