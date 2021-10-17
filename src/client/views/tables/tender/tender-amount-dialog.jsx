@@ -8,44 +8,47 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import {
-  FormControl, InputLabel, MenuItem, Select
-} from '@mui/material';
+import { FormControl } from '@mui/material';
 import { useHistory, useParams } from 'react-router-dom';
 
 
-export default function TenderAmountDialog(props) {
+function TenderAmountDialog(props) {
   const [tenderAmount, setTenderAmount] = useState(0);
   const { tableId } = useParams();
   const history = useHistory();
 
+  const {
+    remainingValue, handleClose, handleCloseWithChange, tenderType, dialogOpen
+  } = props;
+
   useEffect(() => {
-    setTenderAmount(props.remainingValue);
-  }, [props.remainingValue]);
+    setTenderAmount(remainingValue);
+  }, [remainingValue]);
 
   const postTenderToTableApi = () => {
     axios.post(`/api/tables/${tableId}/tender`, {
-      tenderType: props.tenderType,
+      tenderType,
       tenderAmount
     })
       .then((res) => {
         if (res.data['table closed'].changeGiven) {
-          props.handleCloseWithChange(res.data['table closed'].change);
+          handleCloseWithChange(res.data['table closed'].change);
         } else {
-          props.handleClose();
+          handleClose();
           history.push('/tables');
         }
         console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
-        props.handleClose();
+        handleClose();
       });
   };
 
   return (
-    <Dialog open={props.dialogOpen} onClose={props.handleClose}>
+    <Dialog open={dialogOpen} onClose={handleClose}>
       <DialogTitle>Set tender amount</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -60,15 +63,26 @@ export default function TenderAmountDialog(props) {
             type="number"
             fullWidth
             variant="standard"
-            defaultValue={(props.remainingValue / 100)}
-            onChange={(event) => setTenderAmount((event.target.value * 100))}
+            defaultValue={(remainingValue / 100)}
+            onChange={event => setTenderAmount((event.target.value * 100))}
           />
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={postTenderToTableApi}>Confirm Tender</Button>
       </DialogActions>
     </Dialog>
   );
 }
+
+TenderAmountDialog.propTypes = {
+  remainingValue: PropTypes.number.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  handleCloseWithChange: PropTypes.func.isRequired,
+  dialogOpen: PropTypes.bool.isRequired,
+  tenderType: PropTypes.string.isRequired
+};
+
+
+export default TenderAmountDialog;
