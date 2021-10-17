@@ -9,7 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  FormControl, InputLabel, MenuItem, Select
+} from '@mui/material';
 
 export default function EditItemDialog(props) {
   const [categories, setCategories] = useState([]);
@@ -18,7 +20,7 @@ export default function EditItemDialog(props) {
   const [newItemPrice, setNewItemPrice] = useState('');
 
   useEffect(async () => {
-    let serverCats = (await axios.get('/api/items/categories'));
+    const serverCats = (await axios.get('/api/items/categories'));
     setCategories(serverCats.data);
   });
 
@@ -39,14 +41,16 @@ export default function EditItemDialog(props) {
       });
   };
 
-  //TODO - this is not even nearly finished - atm it is just a rip off of the new item dialog
+  // TODO - this is not even nearly finished - atm it is just a rip off of the new item dialog
 
   return (
     <Dialog open={props.dialogOpen} onClose={props.handleClose} itemID={props.itemId}>
       <DialogTitle>Edit item</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          This is where you can edit item ID {props.itemId}
+          This is where you can edit item ID
+          {' '}
+          {props.itemId}
         </DialogContentText>
         <FormControl required fullWidth>
           <TextField

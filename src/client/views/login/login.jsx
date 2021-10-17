@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './login.css';
 import { TextField, Card, Button } from '@mui/material';
-import ErrorToast from './error-message';
 import { useHistory } from 'react-router-dom';
+import ErrorToast from './error-message';
 import { useAuth } from '../../controllers/use-auth';
 
 function Login() {
-
   useEffect(() => {
     document.title = 'Login';
   });

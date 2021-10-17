@@ -9,11 +9,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
-import FastfoodIcon from '@mui/icons-material/Fastfood';
 import RestoreIcon from '@mui/icons-material/Restore';
 import FoodBankIcon from '@mui/icons-material/FoodBank';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import { Link as RouterLink, Route, MemoryRouter } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../controllers/use-auth';
 
 function ListItemLink(props) {
@@ -36,7 +35,7 @@ function ListItemLink(props) {
 }
 
 ListItemLink.propTypes = {
-  icon: PropTypes.element,
+  icon: PropTypes.element.isRequired,
   primary: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
 };
