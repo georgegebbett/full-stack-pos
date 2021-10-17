@@ -31,20 +31,20 @@ function OrderItemTable(props) {
               </TableCell>
             </TableRow>
           ))}
-          (tableTenders ?
-          (
-          {tableTenders.map(tableTender => (
-            <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell>{tableTender.type}</TableCell>
-              <TableCell>
-                <b>
-                  {currencyFormatter.format(tableTender.amount / 100)}
-                </b>
-              </TableCell>
-            </TableRow>
-          ))}
-          )
-          : null)
+          {(tableTenders
+            ? (
+              tableTenders.map(tableTender => (
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell>{tableTender.type}</TableCell>
+                  <TableCell>
+                    <b>
+                      {currencyFormatter.format(tableTender.amount / 100)}
+                    </b>
+                  </TableCell>
+                </TableRow>
+              ))
+            )
+            : null)}
         </TableBody>
         <TableFooter>
           <TableRow>
