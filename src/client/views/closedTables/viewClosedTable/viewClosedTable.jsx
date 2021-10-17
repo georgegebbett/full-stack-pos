@@ -1,24 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  Grid,
-  Typography,
   Box,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableFooter
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import './viewClosedTable.css';
 import axios from 'axios';
-import { abs } from 'mathjs';
-import { currencyFormatter } from '../../../controllers/currencyFormatter';
 import OrderItemTable from '../../../components/orderItemTable';
 
 export default function ViewClosedTable() {
@@ -28,7 +15,6 @@ export default function ViewClosedTable() {
   const [tableTotal, setTableTotal] = useState([]);
   const [updateData, setUpdateData] = useState(false);
   const { tableId } = useParams();
-  const history = useHistory();
 
   useEffect(() => {
     const getTableData = async () => {
@@ -46,8 +32,8 @@ export default function ViewClosedTable() {
           ));
           setTableItems(items);
           axios.get(`/api/tables/${tableId}/tender`)
-            .then((res) => {
-              setTableTenders(res.data)
+            .then((res1) => {
+              setTableTenders(res1.data);
             })
             .catch(() => {
               console.log('Error getting tenders');

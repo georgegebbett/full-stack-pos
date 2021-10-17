@@ -9,7 +9,6 @@ import axios from 'axios';
 import TenderAmountDialog from './tender-amount-dialog';
 import ChangeDialog from './change-dialog';
 import OrderItemTable from '../../../components/orderItemTable';
-import { currencyFormatter } from '../../../controllers/currencyFormatter';
 
 export default function TenderScreen() {
   const [tableOrders, setTableOrders] = useState([]);

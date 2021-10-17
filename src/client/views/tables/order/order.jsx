@@ -2,23 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Grid,
-  Typography,
   Box,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableFooter
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
 import './order.css';
 import axios from 'axios';
 import { round } from 'mathjs';
-import { currencyFormatter } from '../../../controllers/currencyFormatter';
 import OrderItemTable from '../../../components/orderItemTable';
 
 export default function OrderScreen() {
