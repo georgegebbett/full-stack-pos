@@ -9,7 +9,6 @@ import axios from 'axios';
 import OrderItemTable from '../../../components/orderItemTable';
 
 export default function ViewClosedTable() {
-  const [tableOrders, setTableOrders] = useState([]);
   const [tableTenders, setTableTenders] = useState([]);
   const [tableItems, setTableItems] = useState([]);
   const [tableTotal, setTableTotal] = useState([]);
@@ -22,7 +21,6 @@ export default function ViewClosedTable() {
       document.title = 'Closed Table';
       axios.get(`/api/tables/${tableId}/orders`)
         .then((res) => {
-          setTableOrders(res.data);
           console.log('Table orders', res.data);
           const items = res.data.flatMap(order => (
             order.map(item => ({

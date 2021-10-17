@@ -11,7 +11,6 @@ import ChangeDialog from './change-dialog';
 import OrderItemTable from '../../../components/orderItemTable';
 
 export default function TenderScreen() {
-  const [tableOrders, setTableOrders] = useState([]);
   const [tableTenders, setTableTenders] = useState([]);
   const [tableItems, setTableItems] = useState([]);
   const [tableTotal, setTableTotal] = useState([]);
@@ -29,7 +28,6 @@ export default function TenderScreen() {
       document.title = 'Tender';
       axios.get(`/api/tables/${tableId}/orders`)
         .then((res) => {
-          setTableOrders(res.data);
           console.log('Table orders', res.data);
           const items = res.data.flatMap(order => (
             order.map(item => ({
