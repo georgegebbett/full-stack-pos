@@ -19,6 +19,7 @@ import './viewClosedTable.css';
 import axios from 'axios';
 import { abs } from 'mathjs';
 import { currencyFormatter } from '../../../controllers/currencyFormatter';
+import OrderItemTable from '../../../components/orderItemTable';
 
 export default function ViewClosedTable() {
   const [tableOrders, setTableOrders] = useState([]);
@@ -64,44 +65,11 @@ export default function ViewClosedTable() {
   return (
     <div className="orderDiv">
       <Box>
-        <TableContainer component={Paper} className="orderPaper">
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Item</TableCell>
-                <TableCell align="left">Price</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableItems.map(tableItem => (
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>{tableItem.name}</TableCell>
-                  <TableCell>
-                    {currencyFormatter.format(tableItem.price / 100)}
-                  </TableCell>
-                </TableRow>
-              ))}
-              {tableTenders.map(tableTender => (
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>{tableTender.type}</TableCell>
-                  <TableCell>
-                    <b>
-                      {currencyFormatter.format(tableTender.amount / 100)}
-                    </b>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell>{(tableTotal > 0 ? 'Total' : 'Change')}</TableCell>
-                <TableCell>
-                  {currencyFormatter.format(abs(tableTotal / 100))}
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+        <OrderItemTable
+          tableTotal={tableTotal}
+          tableItems={tableItems}
+          tableTenders={tableTenders}
+        />
         <Button
           variant="contained"
           size="large"
