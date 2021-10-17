@@ -1,35 +1,35 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import {
-  FormControl, InputLabel, MenuItem, Select
-} from '@mui/material';
-import { useHistory, useParams } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function ChangeDialog(props) {
-  const history = useHistory();
+function ChangeDialog(props) {
+  const { dialogOpen, handleClose, changeAmount } = props;
 
   return (
-    <Dialog open={props.dialogOpen} onClose={props.handleClose}>
+    <Dialog open={dialogOpen} onClose={handleClose}>
       <DialogTitle>Change amount</DialogTitle>
       <DialogContent>
         <Typography variant="h2">
           £
-          {(props.changeAmount / 100)}
+          {(changeAmount / 100)}
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>OK</Button>
+        <Button onClick={handleClose}>OK</Button>
       </DialogActions>
     </Dialog>
   );
 }
+
+ChangeDialog.propTypes = {
+  dialogOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  changeAmount: PropTypes.number.isRequired
+};
+
+export default ChangeDialog;
