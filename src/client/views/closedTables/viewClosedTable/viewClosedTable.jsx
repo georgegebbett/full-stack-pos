@@ -12,7 +12,6 @@ export default function ViewClosedTable() {
   const [tableTenders, setTableTenders] = useState([]);
   const [tableItems, setTableItems] = useState([]);
   const [tableTotal, setTableTotal] = useState([]);
-  const [updateData, setUpdateData] = useState(false);
   const { tableId } = useParams();
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export default function ViewClosedTable() {
     };
 
     getTableData();
-  }, [updateData]);
+  }, []);
 
   return (
     <div className="orderDiv">
