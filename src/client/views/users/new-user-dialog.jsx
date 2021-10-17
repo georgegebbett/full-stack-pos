@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import PropTypes from 'prop-types';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -13,20 +14,19 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup, FormLabel,
-  InputLabel,
-  MenuItem,
-  Select
 } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 
-export default function NewUserDialog(props) {
+function NewUserDialog(props) {
   const [roles, setRoles] = useState([]);
   const [newUserName, setNewUserName] = useState('');
   const [newUserUsername, setNewUserUsername] = useState('');
   const [newUserRoles, setNewUserRoles] = useState({});
   const [newUserPassword, setNewUserPassword] = useState('');
 
-  useEffect(async () => {
+  const { dialogOpen, handleClose } = props;
+
+  useEffect(() => {
     const fetchServerRoles = async () => {
       const serverRoles = (await axios.get('/api/roles'));
       setRoles(serverRoles.data);
@@ -34,11 +34,11 @@ export default function NewUserDialog(props) {
     fetchServerRoles();
   }, []);
 
-  const handleRoleChange = (roleName, event) => {
-    console.log(roleName, event.target.checked);
+  const handleRoleChange = (roleName, changeEvent) => {
+    console.log(roleName, changeEvent.target.checked);
     setNewUserRoles({
       ...newUserRoles,
-      [roleName]: event.target.checked
+      [roleName]: changeEvent.target.checked
     });
   };
 
@@ -68,12 +68,12 @@ export default function NewUserDialog(props) {
         console.log(err);
       })
       .finally(() => {
-        props.handleClose();
+        handleClose();
       });
   };
 
   return (
-    <Dialog open={props.dialogOpen} onClose={props.handleClose}>
+    <Dialog open={dialogOpen} onClose={handleClose}>
       <DialogTitle>Add new user</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -121,14 +121,31 @@ export default function NewUserDialog(props) {
         <FormLabel component="legend">Roles:</FormLabel>
         <FormGroup required id="roleGroup">
           {roles.map(role => (
-            <FormControlLabel key={role._id} control={<Checkbox name={role.name} className="roleCheckbox" onChange={() => handleRoleChange(role.name, event)} />} label={role.name} />
+            <FormControlLabel
+              key={role._id}
+              control={(
+                <Checkbox
+                  name={role.name}
+                  className="roleCheckbox"
+                  onChange={changeEvent => handleRoleChange(role.name, changeEvent)}
+                />
+              )}
+              label={role.name}
+            />
           ))}
         </FormGroup>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={createNewUser}>Add User</Button>
       </DialogActions>
     </Dialog>
   );
 }
+
+NewUserDialog.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  dialogOpen: PropTypes.bool.isRequired
+};
+
+export default NewUserDialog;
