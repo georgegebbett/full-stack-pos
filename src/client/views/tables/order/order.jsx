@@ -19,6 +19,7 @@ import './order.css';
 import axios from 'axios';
 import { round } from 'mathjs';
 import { currencyFormatter } from '../../../controllers/currencyFormatter';
+import OrderItemTable from '../../../components/orderItemTable';
 
 export default function OrderScreen() {
   const [items, setItems] = useState([]);
@@ -87,34 +88,10 @@ export default function OrderScreen() {
         </Grid>
       </Box>
       <Box>
-        <TableContainer component={Paper} className="orderPaper">
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Item</TableCell>
-                <TableCell align="left">Price</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orderItems.map(orderItem => (
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>{orderItem.name}</TableCell>
-                  <TableCell>
-                    {currencyFormatter.format(orderItem.price / 100)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell>Total</TableCell>
-                <TableCell>
-                  {currencyFormatter.format(orderTotal / 100)}
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+        <OrderItemTable
+          tableTotal={orderTotal}
+          tableItems={orderItems}
+        />
         <Box>
           <Button
             variant="contained"

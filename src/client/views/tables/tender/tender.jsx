@@ -20,6 +20,7 @@ import axios from 'axios';
 import TenderAmountDialog from './tender-amount-dialog';
 import ChangeDialog from './change-dialog';
 import { currencyFormatter } from '../../../controllers/currencyFormatter';
+import OrderItemTable from '../../../components/orderItemTable';
 
 export default function TenderScreen() {
   const [tableOrders, setTableOrders] = useState([]);
@@ -51,7 +52,7 @@ export default function TenderScreen() {
           setTableItems(items);
           axios.get(`/api/tables/${tableId}/tender`)
             .then((res) => {
-              setTableTenders(res.data)
+              setTableTenders(res.data);
             })
             .catch(() => {
               console.log('Error getting tenders');
@@ -105,44 +106,11 @@ export default function TenderScreen() {
           handleClose={handleChangeDialogClose}
           changeAmount={changeAmount}
         />
-        <TableContainer component={Paper} className="orderPaper">
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Item</TableCell>
-                <TableCell align="left">Price</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableItems.map(tableItem => (
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>{tableItem.name}</TableCell>
-                  <TableCell>
-                    {currencyFormatter.format(tableItem.price / 100)}
-                  </TableCell>
-                </TableRow>
-              ))}
-              {tableTenders.map(tableTender => (
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>{tableTender.type}</TableCell>
-                  <TableCell>
-                    <b>
-                      {currencyFormatter.format(tableTender.amount / 100)}
-                    </b>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell>{(tableTotal > 0 ? 'Total' : 'Change')}</TableCell>
-                <TableCell>
-                  {currencyFormatter.format(tableTotal / 100)}
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+        <OrderItemTable
+          tableItems={tableItems}
+          tableTenders={tableTenders}
+          tableTotal={tableTotal}
+        />
         <Box>
           <Button
             variant="contained"
