@@ -8,10 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Button } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Button } from '@mui/material';
 import SuccessToast from './success-message';
 import NewItemDialog from './new-item-dialog';
 import EditItemDialog from './edit-item-dialog';
@@ -91,6 +90,11 @@ export default function Items() {
     refreshData();
   };
 
+  const handleCancel = () => {
+    setEditItemDialogOpen(false);
+    setNewItemDialogOpen(false);
+  };
+
   const auth = useAuth();
 
   return (
@@ -101,13 +105,16 @@ export default function Items() {
         <NewItemDialog
           dialogOpen={newItemDialogOpen}
           handleClose={handleNewItemDialogClose}
+          handleCancel={handleCancel}
           categories={categories}
         />
         <EditItemDialog
           dialogOpen={editItemDialogOpen}
           handleClose={handleEditItemDialogClose}
+          handleCancel={handleCancel}
           itemId={editingItemId}
           categories={categories}
+          items={items}
         />
         <SuccessToast open={bannerOpen} handleClose={closeBanner} bannerItem={bannerItem} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="itemTable">

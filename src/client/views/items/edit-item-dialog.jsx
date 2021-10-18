@@ -22,20 +22,20 @@ function EditItemDialog(props) {
   const [loading, setLoading] = useState(true);
 
   const {
-    itemId, handleClose, dialogOpen, categories
+    itemId, handleClose, handleCancel, dialogOpen, categories, items
   } = props;
 
   useEffect(() => {
-    const getServerData = async () => {
+    const setCurrentItem = async () => {
       setLoading(true);
-      const currentItem = (await axios.get(`/api/items/${itemId}`));
-      setItemName(currentItem.data.name);
-      setItemCategory(currentItem.data.category);
-      setItemPrice(currentItem.data.price);
+      const currentItem = items.find(item => item._id === itemId);
+      setItemName(currentItem.name);
+      setItemCategory(currentItem.category);
+      setItemPrice(currentItem.price);
       setLoading(false);
     };
 
-    getServerData();
+    setCurrentItem();
   }, [itemId]);
 
   const updateItem = () => {
@@ -51,14 +51,12 @@ function EditItemDialog(props) {
         console.log(err);
       })
       .finally(() => {
-        props.handleClose();
+        handleClose();
       });
   };
 
-  // TODO - this is not even nearly finished - atm it is just a rip off of the new item dialog
-
   return (
-    <Dialog open={dialogOpen} onClose={handleClose}>
+    <Dialog open={dialogOpen} onClose={handleCancel}>
       {(loading
         ? <CircularProgress /> : (
           <React.Fragment>
@@ -110,7 +108,7 @@ function EditItemDialog(props) {
               </FormControl>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleCancel}>Cancel</Button>
               <Button onClick={updateItem}>Add Item</Button>
             </DialogActions>
           </React.Fragment>
@@ -123,11 +121,14 @@ EditItemDialog.propTypes = {
   itemId: PropTypes.string.isRequired,
   dialogOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleCancel: PropTypes.func.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object),
   categories: PropTypes.arrayOf(PropTypes.object)
 };
 
 EditItemDialog.defaultProps = {
-  categories: []
+  categories: [],
+  items: []
 };
 
 export default EditItemDialog;

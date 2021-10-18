@@ -19,7 +19,7 @@ function NewItemDialog(props) {
   const [newItemCategory, setNewItemCategory] = useState('');
   const [newItemPrice, setNewItemPrice] = useState('');
 
-  const { dialogOpen, handleClose, categories } = props;
+  const { dialogOpen, handleClose, handleCancel, categories } = props;
 
   const createNewItem = () => {
     axios.post('/api/items', {
@@ -34,12 +34,12 @@ function NewItemDialog(props) {
         console.log(err);
       })
       .finally(() => {
-        props.handleClose();
+        handleClose();
       });
   };
 
   return (
-    <Dialog open={dialogOpen} onClose={handleClose}>
+    <Dialog open={dialogOpen} onClose={handleCancel}>
       <DialogTitle>Add new item</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -85,7 +85,7 @@ function NewItemDialog(props) {
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleCancel}>Cancel</Button>
         <Button onClick={createNewItem}>Add Item</Button>
       </DialogActions>
     </Dialog>
@@ -95,6 +95,7 @@ function NewItemDialog(props) {
 NewItemDialog.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object),
   handleClose: PropTypes.func.isRequired,
+  handleCancel: PropTypes.func.isRequired,
   dialogOpen: PropTypes.bool.isRequired
 };
 
