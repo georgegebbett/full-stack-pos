@@ -14,7 +14,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import NewLayoutDialog from './new-layout-dialog';
 import EditLayoutDialog from './edit-layout-dialog';
-import { useAuth } from '../../../controllers/use-auth';
+import { useAuth } from '../../controllers/use-auth';
 
 
 export default function Layouts() {
@@ -43,7 +43,7 @@ export default function Layouts() {
 
   const deleteLayout = (layoutId) => {
     setLoading(true);
-    axios.delete('/api/layouts', { data: { layoutId } })
+    axios.delete(`/api/layouts/${layoutId}`)
       .then((res) => {
         console.log(res);
       })
@@ -100,6 +100,7 @@ export default function Layouts() {
           handleClose={handleEditLayoutDialogClose}
           handleCancel={handleCancel}
           layoutId={editingLayoutId}
+          layouts={layouts}
         />
         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="itemTable">
           <TableHead>
