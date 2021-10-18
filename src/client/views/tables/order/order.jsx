@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  Grid,
   Box,
   Button,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useParams, useHistory } from 'react-router-dom';
 import './order.css';
 import axios from 'axios';
 import { round } from 'mathjs';
 import OrderItemTable from '../../../components/orderItemTable';
+import OrderButtons from './OrderButtons';
 
 export default function OrderScreen() {
   const [items, setItems] = useState([]);
@@ -28,14 +26,6 @@ export default function OrderScreen() {
     getItems();
   }, []);
 
-  const Item = styled(Paper)({
-    color: 'darkslategray',
-    backgroundColor: 'aliceblue',
-    padding: 8,
-    borderRadius: 4,
-    height: 90,
-    width: 90
-  });
 
   const addItemToOrder = (orderItem) => {
     setOrderItems([
@@ -69,15 +59,10 @@ export default function OrderScreen() {
 
   return (
     <div className="orderDiv">
-      <Box className="orderButtons">
-        <Grid container justifyContent="center" spacing={5}>
-          {items.map(item => (
-            <Grid key={item._id} item xs={2} onClick={() => addItemToOrder(item)}>
-              <Item>{item.name}</Item>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+      <OrderButtons
+        items={items}
+        addItemToOrder={addItemToOrder}
+      />
       <Box>
         <OrderItemTable
           tableTotal={orderTotal}
