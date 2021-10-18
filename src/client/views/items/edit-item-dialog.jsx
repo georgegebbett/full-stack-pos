@@ -6,11 +6,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Loader from '../../components/loader/loader';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
+  CircularProgress,
   FormControl, InputLabel, MenuItem, Select
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -60,7 +60,7 @@ function EditItemDialog(props) {
   return (
     <Dialog open={dialogOpen} onClose={handleClose}>
       {(loading
-        ? <Loader /> : (
+        ? <CircularProgress /> : (
           <React.Fragment>
             <DialogTitle>Edit item</DialogTitle>
             <DialogContent>

@@ -8,9 +8,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import SuccessToast from './success-message';
 import NewItemDialog from './new-item-dialog';
 import EditItemDialog from './edit-item-dialog';
@@ -18,7 +19,6 @@ import EditItemDialog from './edit-item-dialog';
 import './items.css';
 import { useAuth } from '../../controllers/use-auth';
 import { currencyFormatter } from '../../controllers/currencyFormatter';
-import Loader from '../../components/loader/loader';
 
 export default function Items() {
   const [items, setItems] = useState([]);
@@ -95,7 +95,7 @@ export default function Items() {
 
   return (
     (loading ? (
-      <Loader />
+      <CircularProgress />
     ) : (
       <TableContainer component={Paper}>
         <NewItemDialog
