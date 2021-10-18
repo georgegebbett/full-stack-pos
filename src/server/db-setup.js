@@ -32,12 +32,18 @@ const itemCategorySchema = new mongoose.Schema({
   name: String
 });
 
+const itemLayoutSchema = new mongoose.Schema({
+  name: String,
+  items: Array
+});
+
 const User = mongoose.model('User', userSchema);
 const Role = mongoose.model('Role', roleSchema);
 const Table = mongoose.model('Table', tableSchema);
 const OrderItem = mongoose.model('OrderItem', orderItemSchema);
 const ItemCategory = mongoose.model('ItemCategory', itemCategorySchema);
+const ItemLayout = mongoose.model('ItemLayout', itemLayoutSchema);
 
 module.exports = {
-  User, Role, Table, OrderItem, ItemCategory
+  User, Role, Table, OrderItem, ItemCategory, ItemLayout
 };
