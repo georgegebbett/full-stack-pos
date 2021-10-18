@@ -7,6 +7,7 @@ const roleRoutes = require('./routes/roles');
 const authRoutes = require('./routes/authentication');
 const tableRoutes = require('./routes/tables');
 const itemRoutes = require('./routes/items');
+const layoutRoutes = require('./routes/layouts');
 
 
 app.use(express.static('dist'));
@@ -20,5 +21,7 @@ authRoutes(app);
 tableRoutes(app);
 
 itemRoutes(app);
+
+layoutRoutes(app);
 
 app.listen(process.env.PORT || 3001, () => console.log(`Listening on port ${process.env.PORT || 3001}!`));

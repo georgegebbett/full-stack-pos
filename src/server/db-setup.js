@@ -34,6 +34,7 @@ const itemCategorySchema = new mongoose.Schema({
 
 const itemLayoutSchema = new mongoose.Schema({
   name: String,
+  isPrimary: Boolean,
   items: Array
 });
 

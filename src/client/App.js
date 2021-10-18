@@ -19,6 +19,7 @@ import ClosedTables from './views/closedTables/closedTables';
 import ViewClosedTable from './views/closedTables/viewClosedTable/viewClosedTable';
 import { ProvideAuth } from './controllers/use-auth';
 import PrivateRoute from './controllers/privateRoute';
+import Layouts from './views/items/layouts/layouts';
 
 export default function App() {
   return (
@@ -43,6 +44,9 @@ export default function App() {
           </PrivateRoute>
           <PrivateRoute path="/users" permission="user:read">
             <Users />
+          </PrivateRoute>
+          <PrivateRoute path="/layouts" permission="layout:read">
+            <Layouts />
           </PrivateRoute>
           <PrivateRoute path="/items" permission="item:read">
             <Items />

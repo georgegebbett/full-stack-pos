@@ -12,6 +12,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import RestoreIcon from '@mui/icons-material/Restore';
 import FoodBankIcon from '@mui/icons-material/FoodBank';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import BackupTableIcon from '@mui/icons-material/BackupTable';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../controllers/use-auth';
 
@@ -56,6 +57,7 @@ export default function ListRouter() {
         <List aria-label="secondary functions">
           {auth.user.permissions.includes('user:read') ? <ListItemLink to="/users" primary="Users" icon={<GroupIcon />} /> : null}
           {auth.user.permissions.includes('item:read') ? <ListItemLink to="/items" primary="Items" icon={<FoodBankIcon />} /> : null}
+          {auth.user.permissions.includes('layout:read') ? <ListItemLink to="/layouts" primary="Layouts" icon={<BackupTableIcon />} /> : null}
         </List>
       </Paper>
     </Box>
