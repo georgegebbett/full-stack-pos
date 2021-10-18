@@ -18,9 +18,11 @@ import EditItemDialog from './edit-item-dialog';
 import './items.css';
 import { useAuth } from '../../controllers/use-auth';
 import { currencyFormatter } from '../../controllers/currencyFormatter';
+import Loader from '../../components/loader/loader';
 
 export default function Items() {
   const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bannerOpen, setBannerOpen] = useState(false);
   const [bannerItem, setBannerItem] = useState('');
@@ -38,6 +40,8 @@ export default function Items() {
       setLoading(true);
       const { data } = await axios.get('/api/items');
       setItems(data);
+      const cats = await axios.get('/api/items/categories');
+      setCategories(cats.data);
       setLoading(false);
     };
 
@@ -91,14 +95,19 @@ export default function Items() {
 
   return (
     (loading ? (
-      <Typography variant="h1">Loading!</Typography>
+      <Loader />
     ) : (
       <TableContainer component={Paper}>
-        <NewItemDialog dialogOpen={newItemDialogOpen} handleClose={handleNewItemDialogClose} />
+        <NewItemDialog
+          dialogOpen={newItemDialogOpen}
+          handleClose={handleNewItemDialogClose}
+          categories={categories}
+        />
         <EditItemDialog
           dialogOpen={editItemDialogOpen}
           handleClose={handleEditItemDialogClose}
           itemId={editingItemId}
+          categories={categories}
         />
         <SuccessToast open={bannerOpen} handleClose={closeBanner} bannerItem={bannerItem} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="itemTable">

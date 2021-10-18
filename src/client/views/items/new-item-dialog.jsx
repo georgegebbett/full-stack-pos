@@ -8,19 +8,18 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useState } from 'react';
+import {
+  FormControl, InputLabel, MenuItem, Select
+} from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function NewItemDialog(props) {
-  const [categories, setCategories] = useState([]);
+function NewItemDialog(props) {
   const [newItemName, setNewItemName] = useState('');
   const [newItemCategory, setNewItemCategory] = useState('');
   const [newItemPrice, setNewItemPrice] = useState('');
 
-  useEffect(async () => {
-    let serverCats = (await axios.get('/api/items/categories'));
-    setCategories(serverCats.data);
-  });
+  const { dialogOpen, handleClose, categories } = props;
 
   const createNewItem = () => {
     axios.post('/api/items', {
@@ -40,7 +39,7 @@ export default function NewItemDialog(props) {
   };
 
   return (
-    <Dialog open={props.dialogOpen} onClose={props.handleClose}>
+    <Dialog open={dialogOpen} onClose={handleClose}>
       <DialogTitle>Add new item</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -86,9 +85,21 @@ export default function NewItemDialog(props) {
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={createNewItem}>Add Item</Button>
       </DialogActions>
     </Dialog>
   );
 }
+
+NewItemDialog.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.object),
+  handleClose: PropTypes.func.isRequired,
+  dialogOpen: PropTypes.bool.isRequired
+};
+
+NewItemDialog.defaultProps = {
+  categories: []
+};
+
+export default NewItemDialog;

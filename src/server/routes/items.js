@@ -32,4 +32,33 @@ module.exports = function (app) {
       await ItemCategory.create({ name: req.body.name });
       res.sendStatus(201);
     });
+
+  app.route('/api/items/:itemId')
+    .get((req, res) => {
+      OrderItem.findById(req.params.itemId)
+        .then((foundItem) => {
+          res.json(foundItem);
+        })
+        .catch(() => {
+          res.sendStatus(404);
+        });
+    })
+    .put((req, res) => {
+      bodyParser.json();
+      OrderItem.findByIdAndUpdate(
+        req.params.itemId,
+        {
+          name: req.body.name,
+          category: req.body.category,
+          price: req.body.price
+        },
+        { new: true }
+      )
+        .then((updatedItem) => {
+          res.json(updatedItem);
+        })
+        .catch(() => {
+          res.sendStatus(500);
+        });
+    });
 };
