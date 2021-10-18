@@ -1,5 +1,5 @@
 import { Box, Grid, Paper } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
@@ -8,6 +8,9 @@ function LayoutDisplayer(props) {
   const {
     layout, blankOnClick, itemOnClick, layoutOnClick
   } = props;
+
+  const [items, setItems] = useState([]);
+  const [layouts, setLayouts] = useState([]);
 
   const Item = styled(Paper)({
     color: 'darkslategray',
@@ -18,7 +21,20 @@ function LayoutDisplayer(props) {
     width: 90
   });
 
-  const getItemName = async itemId => (await axios.get(`/api/items/${itemId}`)).data.name;
+
+  useEffect(() => {
+    const getItems = async () => {
+      const { data } = await axios.get('/api/items/');
+      setItems(data);
+    };
+    const getLayouts = async () => {
+      const { data } = await axios.get('/api/layouts/');
+      setLayouts(data);
+    };
+
+    getItems();
+    getLayouts();
+  }, []);
 
   return (
     <Box className="orderButtons">
@@ -28,19 +44,19 @@ function LayoutDisplayer(props) {
             case 'blank':
               return (
                 <Grid item xs={2} onClick={blankOnClick}>
-                  <Item />
+                  <Item>Blank Square</Item>
                 </Grid>
               );
             case 'item':
               return (
                 <Grid key={item.id} item xs={2} onClick={itemOnClick}>
-                  <Item>{getItemName(item.id)}</Item>
+                  <Item>{items.find(listItem => item.id === listItem._id).name}</Item>
                 </Grid>
               );
             case 'layout':
               return (
                 <Grid key={item.id} item xs={2} onClick={layoutOnClick}>
-                  <Item>{item.id}</Item>
+                  <Item>{layouts.find(listLayout => item.id === listLayout._id).name}</Item>
                 </Grid>
               );
             default:
