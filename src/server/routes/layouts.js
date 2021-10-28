@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const { ItemLayout } = require('../db-setup');
 
 const newLayoutArray = Array.from(Array(30), () => ({ type: 'blank' }));
+const betterLayoutArray = (`${Array(30)}`).split(',').map(function () { return { key: this[0]++, content: { type: 'blank' } }; }, [0]);
 
 
 module.exports = function (app) {
