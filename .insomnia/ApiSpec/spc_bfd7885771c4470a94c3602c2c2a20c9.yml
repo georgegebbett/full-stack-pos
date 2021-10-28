@@ -1,0 +1,104 @@
+_id: spc_bfd7885771c4470a94c3602c2c2a20c9
+type: ApiSpec
+parentId: wrk_b0e7a667711b4bbeb091df4b63a44d7a
+modified: 1634651732586
+created: 1634650422968
+fileName: pos-api-spec.yaml
+contents: "# Specify that your document is the OpenAPI 3 format
+
+  openapi: 3.0.0
+
+
+  # Define high-level metadata for the API
+
+  info:
+
+  \  version: 1.0.0
+
+  \  title: FullStackPOS API
+
+  \  description: FullStackPOS has a RESTful API
+
+  \\ 
+
+  # Specify the base URL the API can be accessed from
+
+  servers:
+
+  \  - url: http://localhost:3001/api
+
+  \    description: Local development server
+
+
+  # Define operations for the API. This will be where most
+
+  # of the work is done. The first route you'll be defining
+
+  # is `GET /recentchanges.json`
+
+  paths:
+
+  \  /items:
+
+  \    get:
+
+  \      summary: Get all items
+
+  \      responses:
+
+  \        '200':
+
+  \          description: A list of all items
+
+  \          content:\ 
+
+  \            'application/json': { }
+
+  \    post:
+
+  \      summary: Create a new item
+
+  \      requestBody:
+
+  \        content:
+
+  \          'application/x-www-form-urlencoded':
+
+  \            schema:
+
+  \              properties:
+
+  \                name:
+
+  \                  description: Item name
+
+  \                  type: string
+
+  \                price:
+
+  \                  description: Item price in pence
+
+  \                  type: integer
+
+  \                category:
+
+  \                  description: Item category
+
+  \                  type: string
+
+  \              required:
+
+  \                - name
+
+  \                - price
+
+  \                - category
+
+  \      responses:\ 
+
+  \        '201':
+
+  \          description: Item created
+
+  \          "
+contentType: yaml
