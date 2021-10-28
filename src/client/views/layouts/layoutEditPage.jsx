@@ -8,15 +8,16 @@ import EditLayoutCellDialog from './layoutCellEditDialog';
 
 export default function LayoutEditPage() {
   const { layoutId } = useParams();
-  const [layout, setLayout] = useState([]);
+  const [layout, setLayout] = useState({});
   const [dialogOpen, setDialogOpen] = useState(true);
   const [items, setItems] = useState([]);
   const [layouts, setLayouts] = useState([]);
+  const [editingCell, setEditingCell] = useState(0);
 
   useEffect(() => {
     const getLayoutFromServer = async () => {
       const { data } = await axios.get(`/api/layouts/${layoutId}`);
-      setLayout(data.items);
+      setLayout(data);
     };
 
     const getItems = async () => {
@@ -40,7 +41,9 @@ export default function LayoutEditPage() {
     setDialogOpen(false);
   };
 
-  const handleOpenEditDialog = () => {
+  const handleOpenEditDialog = (x) => {
+    console.log(x);
+    setEditingCell(x);
     setDialogOpen(true);
   };
 
@@ -54,11 +57,13 @@ export default function LayoutEditPage() {
         handleClose={handleCancel}
         items={items}
         layouts={layouts}
+        editingCell={editingCell}
+        currentLayout={layout}
       />
       <LayoutDisplayer
-        layoutOnClick={handleOpenEditDialog}
-        blankOnClick={handleOpenEditDialog}
-        itemOnClick={handleOpenEditDialog}
+        layoutOnClick={(e) => {handleOpenEditDialog(e)}}
+        blankOnClick={(e) => {handleOpenEditDialog(e)}}
+        itemOnClick={(e) => {handleOpenEditDialog(e)}}
         layout={layout}
       />
     </React.Fragment>

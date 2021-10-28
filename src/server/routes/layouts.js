@@ -40,11 +40,11 @@ module.exports = function (app) {
     })
     .post((req, res) => {
       bodyParser.json();
-      console.log(newLayoutArray);
+      console.log(betterLayoutArray);
       ItemLayout.create({
         name: req.body.name,
         isPrimary: false,
-        items: newLayoutArray
+        items: betterLayoutArray
       })
         .then((createdLayout) => {
           res.json(createdLayout);

@@ -50,7 +50,21 @@ function EditLayoutCellDialog(props) {
   const [selectedItem, setSelectedItem] = useState('');
   const [layoutPrice, setLayoutPrice] = useState('');
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [currentCellValue, setCurrentCellValue] = useState({});
+
+  const {
+    handleClose, handleCancel, dialogOpen, items, layouts, editingCell, currentLayout
+  } = props;
+
+  useEffect(() => {
+    const currentValue = currentLayout.items.find(item => item.key === editingCell);
+
+    setCurrentCellValue(currentValue);
+
+    console.log('current cell value:', currentValue);
+
+  }, [dialogOpen]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -60,16 +74,14 @@ function EditLayoutCellDialog(props) {
     setValue(index);
   };
 
-  const {
-    handleClose, handleCancel, dialogOpen, items, layouts
-  } = props;
+
 
   return (
     <Dialog open={dialogOpen} onClose={handleCancel}>
       {(loading
         ? <CircularProgress /> : (
           <React.Fragment>
-            <DialogTitle>Edit layout</DialogTitle>
+            <DialogTitle>Edit layout of cell {editingCell}</DialogTitle>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs
                 variant="fullWidth"
@@ -121,7 +133,13 @@ EditLayoutCellDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleCancel: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
-  layouts: PropTypes.array.isRequired
+  layouts: PropTypes.array.isRequired,
+  editingCell: PropTypes.number.isRequired,
+  currentLayout: PropTypes.object
+};
+
+EditLayoutCellDialog.defaultProps = {
+  currentLayout: {items: []}
 };
 
 export default EditLayoutCellDialog;

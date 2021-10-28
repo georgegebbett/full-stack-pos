@@ -39,24 +39,24 @@ function LayoutDisplayer(props) {
   return (
     <Box className="orderButtons">
       <Grid container justifyContent="center" spacing={5}>
-        {layout.map((item) => {
-          switch (item.type) {
+        {layout.items.map((item) => {
+          switch (item.content.type) {
             case 'blank':
               return (
-                <Grid item xs={2} onClick={blankOnClick}>
+                <Grid item xs={2} onClick={() => {blankOnClick(item.key)}}>
                   <Item>Blank Square</Item>
                 </Grid>
               );
             case 'item':
               return (
-                <Grid key={item.id} item xs={2} onClick={itemOnClick}>
-                  <Item>{items.find(listItem => item.id === listItem._id).name}</Item>
+                <Grid key={item.key} item xs={2} onClick={() => {itemOnClick(item.key)}}>
+                  <Item>{items.find(listItem => item.content.id === listItem._id).name}</Item>
                 </Grid>
               );
             case 'layout':
               return (
-                <Grid key={item.id} item xs={2} onClick={layoutOnClick}>
-                  <Item>{layouts.find(listLayout => item.id === listLayout._id).name}</Item>
+                <Grid key={item.key} item xs={2} onClick={() => {layoutOnClick(item.key)}}>
+                  <Item>{layouts.find(listLayout => item.content.id === listLayout._id).name}</Item>
                 </Grid>
               );
             default:
@@ -73,10 +73,14 @@ function LayoutDisplayer(props) {
 }
 
 LayoutDisplayer.propTypes = {
-  layout: PropTypes.arrayOf(PropTypes.object).isRequired,
+  layout: PropTypes.object,
   blankOnClick: PropTypes.func.isRequired,
   itemOnClick: PropTypes.func.isRequired,
   layoutOnClick: PropTypes.func.isRequired
+};
+
+LayoutDisplayer.defaultProps = {
+  layout: {items: []}
 };
 
 export default LayoutDisplayer;
